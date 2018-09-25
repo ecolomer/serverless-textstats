@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Text statistics service
+
+Globals:
+  Function:
+    Timeout: 3
+
+
+Resources:
+
+  TextStatsFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: textstats/
+      Handler: index.handler
+      Runtime: nodejs8.10
+      Role: !GetAtt FunctionRole.Arn
+      Events:
+        TextStatsPost:
+          Type: Api 
+          Properties:
+            Path: /textstats
+            Method: post
+        TextStatsGet:
+          Type: Api 
+          Properties:
+            Path: /textstats/{requestid}
+            Method: get
+
+  FunctionRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "lambda.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies: 
+        - 
+          PolicyName: "LogsAccess"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:*"
+        - 
+          PolicyName: "S3Access"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action:
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                Resource: "arn:aws:s3:::textstats-results/*"
+
+
+Outputs:
+
+  TextStatsApi:
+    Description: "API Gateway endpoint URL for Prod stage for TextStats function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/textstats/"
+
+  TextStatsFunction:
+    Description: "TextStats Lambda Function ARN"
+    Value: !GetAtt TextStatsFunction.Arn
+

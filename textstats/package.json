@@ -1,0 +1,10 @@
+{
+  "name": "textstats",
+  "version": "1.0.0",
+  "description": "Text Statistics",
+  "main": "index.js",
+  "author": "Eleatzar Colomer",
+  "dependencies": {
+    "aws-sdk": "latest"
+  }
+}
