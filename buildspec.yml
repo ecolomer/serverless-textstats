@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - (cd textstats && npm install)
-      - aws cloudformation package --template-file template.yaml --s3-bucket textstats-code --output-template-file packaged.yaml
+      - aws cloudformation package --template-file template.yaml --s3-bucket textstats-source --output-template-file packaged.yaml
 
 artifacts:
   type: zip
