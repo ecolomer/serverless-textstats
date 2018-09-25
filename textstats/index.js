@@ -10,7 +10,7 @@ const aws = require('aws-sdk');
 aws.config.update({ region: process.env.AWS_REGION });
 
 const s3 = new aws.S3();
-const bucket = 'textstats-results'
+const bucket = 'textstats-data'
 
 
 function UserException(code, message) {
