@@ -86,9 +86,9 @@ exports.handler = async (event, context) => {
 
         result = {
                    'TextStatistics': {
-                     'words': words.length,
-                     'hyphens': hyphens.length,
-                     'spaces': spaces.length
+                     'words': words ? words.length : 0,
+                     'hyphens': hyphens ? hyphens.length : 0,
+                     'spaces': spaces ? spaces.length : 0
                    }
                  };
       }
